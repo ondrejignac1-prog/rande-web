@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8">
+  <title>💖 Rande?</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      overflow: hidden;
+    }
+
+    .card {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      width: 320px;
+    }
+
+    h1 {
+      font-size: 22px;
+    }
+
+    #yes {
+      padding: 15px 30px;
+      font-size: 20px;
+      background: #ff4d6d;
+      border: none;
+      color: white;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    #no {
+      position: absolute;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      background: #ccc;
+      cursor: pointer;
+    }
+
+    .form {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    input, select, textarea {
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+    }
+
+    button.send {
+      background: #ff4d6d;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+  <h1>💖 Pôjdeš so mnou na rande?</h1>
+
+  <button id="yes">ÁNO 💖</button>
+  <button id="no">NIE 😅</button>
+
+  <div class="form" id="form">
+    <h3>Super 😍</h3>
+
+    <input type="date" id="date">
+    <input type="time" id="time">
+
+    <select id="type">
+      <option>Prechádzka</option>
+      <option>Reštaurácia</option>
+      <option>Auto + rozhovor</option>
+    </select>
+
+    <input id="snack" placeholder="Obľúbený snack">
+    <textarea id="note" placeholder="Niečo pre mňa?"></textarea>
+
+    <button class="send" onclick="send()">Odoslať 💌</button>
+  </div>
+</div>
+
+<script>
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+const form = document.getElementById("form");
+
+// utekajúce NIE
+noBtn.addEventListener("mouseover", () => {
+  noBtn.style.position = "absolute";
+  noBtn.style.left = Math.random() * window.innerWidth + "px";
+  noBtn.style.top = Math.random() * window.innerHeight + "px";
+});
+
+// zobraz formulár
+yesBtn.onclick = () => {
+  form.style.display = "flex";
+};
+</script>
+
+<!-- 🔥 FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, addDoc, collection } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCT_whKKvgNbfE0gSydjbA4bqlNiOYAyr4",
+  authDomain: "rande-8eac3.firebaseapp.com",
+  projectId: "rande-8eac3",
+  storageBucket: "rande-8eac3.appspot.com",
+  messagingSenderId: "832938749954",
+  appId: "1:832938749954:web:834fc6878b0f7cefab371b"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.send = async function () {
+
+  const data = {
+    date: document.getElementById("date").value,
+    time: document.getElementById("time").value,
+    type: document.getElementById("type").value,
+    snack: document.getElementById("snack").value,
+    note: document.getElementById("note").value,
+    created: new Date()
+  };
+
+  await addDoc(collection(db, "rande"), data);
+
+  alert("Odoslané ❤️ Teším sa!");
+};
+</script>
+
+</body>
+</html>
